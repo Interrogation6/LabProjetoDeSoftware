@@ -150,7 +150,7 @@ public class ProfessorActionsController {
         }
     }
 
-    @GetMapping("/transactions/student/{studentId}")
+    /* @GetMapping("/transactions/student/{studentId}")
     public ResponseEntity<?> getTransactionsByStudent(@PathVariable Long studentId) {
         try {
             List<Transaction> list = transactionRepository.findByStudentIdOrderByCreatedAtDesc(studentId);
@@ -160,5 +160,5 @@ public class ProfessorActionsController {
             err.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(err);
         }
-    }
+    } */
 }

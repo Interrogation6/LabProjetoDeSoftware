@@ -509,7 +509,7 @@ class ApiService {
     }>>('/advantages');
   }
 
-  async getAffordableAdvantages(maxCost: number) {
+  /* async getAffordableAdvantages(maxCost: number) {
     return this.request<Array<{
       id: string;
       companyId: string;
@@ -522,9 +522,9 @@ class ApiService {
       currentRedemptions: number;
       createdAt: string;
     }>>(`/advantages/affordable/${maxCost}`);
-  }
+  } */
 
-  async getAdvantageById(id: string) {
+  /* async getAdvantageById(id: string) {
     return this.request<{
       id: string;
       company?: any;
@@ -537,7 +537,7 @@ class ApiService {
       currentRedemptions: number;
       createdAt: string;
     }>(`/advantages/${id}`);
-  }
+  } */
 
   // Student redeem without auth, using provided identity fields
   async redeemAdvantageByStudent(params: { advantageId: number; studentEmail: string; studentName: string }) {

@@ -105,7 +105,7 @@ public class AdvantageController {
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/affordable/{maxCost}")
+    /* @GetMapping("/affordable/{maxCost}")
     public ResponseEntity<List<AdvantageResponse>> getAffordableAdvantages(@PathVariable Integer maxCost) {
         List<Advantage> advantages = advantageService.getAffordableAdvantages(maxCost);
         List<AdvantageResponse> response = advantages.stream()
@@ -122,9 +122,9 @@ public class AdvantageController {
             ))
             .toList();
         return ResponseEntity.ok(response);
-    }
+    } */
     
-    @GetMapping("/{id}")
+    /* @GetMapping("/{id}")
     public ResponseEntity<AdvantageResponse> getAdvantageById(@PathVariable Long id) {
         return advantageService.getAdvantageById(id)
                 .map(adv -> new AdvantageResponse(
@@ -140,7 +140,7 @@ public class AdvantageController {
                 ))
                 .map(resp -> ResponseEntity.ok(resp))
                 .orElse(ResponseEntity.notFound().build());
-    }
+    } */
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateAdvantage(@PathVariable Long id,

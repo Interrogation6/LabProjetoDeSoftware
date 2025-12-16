@@ -10,13 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moedaestudantil.dto.StudentLoginRequest;
@@ -116,11 +114,11 @@ public class StudentController {
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping
+    /* @GetMapping
     public ResponseEntity<List<StudentResponse>> getAllStudents() {
         List<StudentResponse> students = studentService.getAllStudents();
         return ResponseEntity.ok(students);
-    }
+    } */
     
     @GetMapping("/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable Long id) {
@@ -134,7 +132,7 @@ public class StudentController {
         }
     }
     
-    @GetMapping("/email/{email}")
+    /* @GetMapping("/email/{email}")
     public ResponseEntity<?> getStudentByEmail(@PathVariable String email) {
         try {
             StudentResponse response = studentService.getStudentByEmail(email);
@@ -144,7 +142,7 @@ public class StudentController {
             error.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
         }
-    }
+    } */
     
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStudent(@PathVariable Long id, 
@@ -173,7 +171,7 @@ public class StudentController {
         }
     }
     
-    @PatchMapping("/{id}/coins")
+    /* @PatchMapping("/{id}/coins")
     public ResponseEntity<?> updateCoinBalance(@PathVariable Long id, 
                                                @RequestParam Integer amount) {
         try {
@@ -184,5 +182,5 @@ public class StudentController {
             error.put("error", e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
-    }
+    } */
 }
