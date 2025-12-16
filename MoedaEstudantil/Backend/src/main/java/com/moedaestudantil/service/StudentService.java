@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.moedaestudantil.dto.StudentLoginRequest;
 import com.moedaestudantil.dto.StudentRegisterRequest;
@@ -24,6 +25,9 @@ public class StudentService {
     
     @Autowired
     private InstitutionRepository institutionRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
     
     @Transactional
     public StudentResponse registerStudent(StudentRegisterRequest request) {
@@ -50,7 +54,7 @@ public class StudentService {
             request.getAddress(),
             institution,
             request.getCourse(),
-            request.getPassword() // Em produção, seria necessário hashear a senha
+            encoder.encode(request.getPassword()) // Em produção, seria necessário hashear a senha
         );
         
         Student savedStudent = studentRepository.save(student);
@@ -60,8 +64,7 @@ public class StudentService {
     public StudentResponse loginStudent(StudentLoginRequest request) {
         return studentRepository.findByEmail(request.getEmail())
             .map(student -> {
-                // Verificar senha (em produção, comparar com hash)
-                if (!student.getPassword().equals(request.getPassword())) {
+                if(!encoder.matches(request.getPassword(), student.getPassword())) {
                     return new StudentResponse("Credenciais inválidas");
                 }
                 return new StudentResponse(student);
@@ -115,7 +118,7 @@ public class StudentService {
         }
         
         if (request.getPassword() != null && !request.getPassword().trim().isEmpty()) {
-            student.setPassword(request.getPassword()); // Em produção, hashear a senha
+            student.setPassword(encoder.encode(request.getPassword())); // Em produção, hashear a senha
         }
         
         Student updatedStudent = studentRepository.save(student);

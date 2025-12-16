@@ -29,5 +29,8 @@ logging:
   level:
     com.moedaestudantil: DEBUG
 
+security:
+  bcrypt:
+    strength: 8
 
     

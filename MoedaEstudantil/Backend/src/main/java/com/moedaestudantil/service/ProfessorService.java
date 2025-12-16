@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,9 @@ public class ProfessorService {
     @Autowired
     private InstitutionRepository institutionRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @Transactional
     public ProfessorResponse registerProfessor(ProfessorRegisterRequest request) {
         if (professorRepository.existsByEmail(request.getEmail())) {
@@ -42,7 +46,7 @@ public class ProfessorService {
             request.getCpf(),
             request.getDepartment(),
             institution,
-            request.getPassword()
+            encoder.encode(request.getPassword())
         );
         // set email separately (constructor doesn't include it)
         professor.setEmail(request.getEmail());
@@ -55,7 +59,7 @@ public class ProfessorService {
     public ProfessorResponse loginProfessor(ProfessorLoginRequest request) {
         return professorRepository.findByEmail(request.getEmail())
             .map(professor -> {
-                if (!professor.getPassword().equals(request.getPassword())) {
+                if (!encoder.matches(request.getPassword(), professor.getPassword())) {
                     return new ProfessorResponse("Credenciais inválidas");
                 }
                 // Build response while within transaction to avoid LazyInitialization

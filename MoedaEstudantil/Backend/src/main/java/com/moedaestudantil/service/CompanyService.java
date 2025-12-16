@@ -6,6 +6,7 @@ import com.moedaestudantil.dto.CompanyResponse;
 import com.moedaestudantil.model.Company;
 import com.moedaestudantil.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,9 @@ public class CompanyService {
     
     @Autowired
     private CompanyRepository companyRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
     
     public CompanyResponse register(CompanyRegisterRequest request) {
         if (companyRepository.existsByEmail(request.getEmail())) {
@@ -31,7 +35,7 @@ public class CompanyService {
         company.setCompanyName(request.getCompanyName());
         company.setCnpj(request.getCnpj());
         company.setEmail(request.getEmail());
-        company.setPassword(request.getPassword()); // Em produção, usar BCrypt
+        company.setPassword(encoder.encode(request.getPassword())); // Em produção, usar BCrypt
         
         company = companyRepository.save(company);
         
@@ -48,7 +52,7 @@ public class CompanyService {
         
         Company company = companyOpt.get();
         
-        if (!company.getPassword().equals(request.getPassword())) {
+        if (!encoder.matches(request.getPassword(), company.getPassword())) {
             return new CompanyResponse("Credenciais inválidas");
         }
         
